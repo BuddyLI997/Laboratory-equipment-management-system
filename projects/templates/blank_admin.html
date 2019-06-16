@@ -1,0 +1,167 @@
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <title>实验室设备管理系统</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .sidenav-toggled > aside > div > img{
+        width: 30px !important; 
+      }
+      .app-sidebar{
+        z-index: 1000;
+      }
+          .tile ul{
+    position:absolute;
+    right:20px;
+    top:10px;
+}
+
+.tile ul li{
+    padding:5px 10px;
+    margin-top:5px;
+    text-align:center;
+    color:white;
+}
+
+.tile ul li:nth-child(1){
+    background:purple !important;
+}
+
+.tile ul li:nth-child(2){
+    background-color:#36a2eb !important;
+}
+
+.tile ul li:nth-child(3){
+    background-color:#ffce56 !important;
+}
+
+.tile ul li:nth-child(4){
+    background-color:#4bc0c0 !important;
+}
+
+.tile ul li:nth-child(5){
+    background-color:#4e6ca9 !important;
+}
+    </style>
+     {% block css %}{% endblock %}
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+    <header class="app-header"><a class="app-header__logo" href="#">后台管理</a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!--Notification Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
+          <ul class="app-notification dropdown-menu dropdown-menu-right">
+            <li class="app-notification__title">你有 {{request.session.msg}} 条待审核信息.</li>
+            {% ifnotequal request.session.msg 0 %}
+            <div class="app-notification__content">
+              <li><a class="app-notification__item" href="/gocheck/"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+                  <div>
+                    <p class="app-notification__message">有{{request.session.msg}}条待审核，立即去处理审核</p>
+                  </div></a></li>
+              </div>
+            {% endifnotequal %}
+          </ul>
+        </li>
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li><a class="dropdown-item" href="/personal_info/"><i class="fa fa-user fa-lg"></i> 个人信息</a></li>
+            <li><a class="dropdown-item" href="/checkout/"><i class="fa fa-sign-out fa-lg"></i>注销</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="{%static 'img/teacher.png'%}" alt="User Image" style="width: 60px ">
+        <div>
+          <p class="app-sidebar__user-name">{{request.session.name}}</p>
+          <p class="app-sidebar__user-designation">管理员</p>
+        </div>
+      </div>
+      <ul class="app-menu">
+        <li><a class="app-menu__item" href="/home/"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">首页</span></a></li>
+        <li><a class="app-menu__item" href="/personal_info/"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">个人信息</span></a></li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">人员管理</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/student/"  rel="noopener"><i class="icon fa fa-circle-o"></i> 学生信息</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">设备信息</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/device/"><i class="icon fa fa-circle-o"></i> 设备信息</a></li>
+            <li><a class="treeview-item" href="/manufactor/"><i class="icon fa fa-circle-o"></i> 制造商信息</a></li>
+          </ul>
+        </li>
+
+         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-tasks"></i><span class="app-menu__label">设备管理</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/devicein/"><i class="icon fa fa-circle-o"></i> 引入设备</a></li>
+            <li><a class="treeview-item" href="/devicefix/"  rel="noopener"><i class="icon fa fa-circle-o"></i> 设备报修</a></li>
+            <li><a class="treeview-item" href="/deviceab/"  rel="noopener"><i class="icon fa fa-circle-o"></i> 设备报废</a></li>
+            <li><a class="treeview-item" href="/fixdeal/"  rel="noopener"><i class="icon fa fa-circle-o"></i> 维修处理</a></li>
+          </ul>
+        </li>
+
+
+
+         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">信息记录</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/loanrecord_admin/"><i class="icon fa fa-circle-o"></i>  借出记录</a></li>
+            <li><a class="treeview-item" href="/rtrecord_admin/"><i class="icon fa fa-circle-o"></i>  归还记录</a></li>
+            <li><a class="treeview-item" href="/imrecord/"><i class="icon fa fa-circle-o"></i> 引入记录</a></li>
+            <li><a class="treeview-item" href="/fixrecord/"><i class="icon fa fa-circle-o"></i> 修理记录</a></li>
+            <li><a class="treeview-item" href="/abrecord/"><i class="icon fa fa-circle-o"></i> 报废记录</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-check-square"></i><span class="app-menu__label">申请审核</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="/gocheck/"><i class="icon fa fa-circle-o"></i> 处理审核</a></li>
+            <li><a class="treeview-item" href="/checkhistory/"><i class="icon fa fa-circle-o"></i> 处理历史</a></li>
+          </ul>
+        </li>
+
+        <li><a class="app-menu__item" href="/charts/"><i class="app-menu__icon fa fa-pie-chart"></i><span class="app-menu__label">数据统计</span></a></li>
+      </ul>
+    </aside>
+    <main class="app-content">
+     {% block main %}
+     {%endblock%}
+    </main>
+    <!-- Essential javascripts for application to work-->
+    
+    <!-- Page specific javascripts-->
+     <script src="{%static 'js/jquery-3.4.1.min.js'%}"></script>
+    <script src="{%static 'js/popper.min.js'%}"></script>
+    <script src="{%static 'js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'js/main.js'%}"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="{%static '/js/plugins/pace.min.js'%}"></script>
+    {% block js%}
+    {%endblock%}
+    <!-- Google analytics script-->
+    <script type="text/javascript">
+      if(document.location.hostname == 'pratikborsadiya.in') {
+      	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      	ga('create', 'UA-72504830-1', 'auto');
+      	ga('send', 'pageview');
+      }
+    </script>
+  </body>
+</html>

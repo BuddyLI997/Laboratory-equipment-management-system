@@ -1,0 +1,78 @@
+{% extends "table_admin.html" %}
+   {% load staticfiles %}
+   {% block bodytop%}
+    <h1><i class="fa fa-th-list"></i> 处理历史</h1>
+          <p>Check history</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">申请审核</li>
+          <li class="breadcrumb-item active"><a href="#"></a>处理历史</li>
+        </ul>
+   {% endblock%}
+
+   {% block table%}
+   <table class="table table-hover table-bordered" id="dataTable">
+                <thead>
+                  <tr>
+                    <th>申请时间</th>
+                    <th>处理时间</th>
+                    <th>申请者</th>
+                    <th>申请</th>
+                    <th>设备id</th>
+                    <th>设备名</th>
+                    <th>设备型号</th>
+                    <th>处理者</th>
+                    <th>结果</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in data%}
+                    <tr>
+                      <td>{{item.Datetime}}</td>
+                      <td>{{item.dealtime}}</td>
+                      <td>{{item.studentRecord.student.uName}}</td>
+                      <td>{{item.studentRecord.rtype}}</td>
+                      <td>{{item.studentRecord.device.id}}</td>
+                      <td>{{item.studentRecord.device.name}}</td>
+                      <td>{{item.studentRecord.device.modelid}}</td>
+                      <td>{{item.admin.uName}}</td>
+                      <td>{{item.studentRecord.state}}</td>
+                    </tr>
+                  {% endfor %}
+                  
+                </tbody>
+              </table>
+   {% endblock%}
+
+   {% block jss %}
+   <script type="text/javascript">
+     $(document).ready(function() {
+    $('#dataTable').DataTable({
+
+      language: {  
+      "sProcessing": "处理中...",  
+      "sLengthMenu": "显示 _MENU_ 项结果",  
+      "sZeroRecords": "没有匹配结果",  
+      "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",  
+      "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",  
+      "sInfoFiltered": "(由 _MAX_ 项结果过滤)",  
+      "sInfoPostFix": "",  
+      "sSearch": "搜索:",  
+      "sUrl": "",  
+      "sEmptyTable": "表中数据为空",  
+      "sLoadingRecords": "载入中...",  
+      "sInfoThousands": ",",  
+      "oPaginate": {  
+          "sFirst": "首页",  
+          "sPrevious": "上页",  
+          "sNext": "下页",  
+          "sLast": "末页"  
+      } 
+
+    }
+    });
+} );
+   </script>
+   
+{%endblock%}

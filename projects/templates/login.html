@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+   {% load staticfiles %}
+   {% block css %}
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'css/main.css'%}">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{%static 'js/main.js'%}"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="{%static 'js/plugins/pace.min.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'layui/css/layui.css'%}">
+    {%endblock %}
+ {% block body %} 
+    <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
+    <section class="login-content">
+
+      <div class="login-box">
+        <form class="login-form" action="/logincheck/" method="post">
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>登 陆 </h3>
+          <div class="form-group">
+            <label class="control-label">用户名</label>
+            <input class="form-control" name="user" type="text" placeholder="Email" autofocus>
+          </div>
+          <div class="form-group">
+            <label class="control-label">密码</label>
+            <input class="form-control" name="password" type="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" checked type="radio" name="role" id="inlineRadio1" value="学生">
+            <label class="form-check-label" for="inlineRadio1">学生</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="role" id="inlineRadio2" value="管理员">
+            <label class="form-check-label" for="inlineRadio2">管理员</label>
+          </div>
+          </div>
+          <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>登 陆 </button>
+          </div>
+      </div>
+    </section>
+    <!-- Essential javascripts for application to work-->
+    
+{% endblock %}
+
+{% block js%}
+<script src="{%static 'layui/layui.js'%}"></script>
+<script type="text/javascript">
+  layui.use(['layer', 'table', 'element', 'form','laydate','msg'], function () {
+      var element=layui.element;
+      
+    });
+  window.onload=function(){
+    {% if data%}
+    layui.layer.msg("用户名或密码错误");
+  {% endif %}
+};
+  
+</script>
+{% endblock %}

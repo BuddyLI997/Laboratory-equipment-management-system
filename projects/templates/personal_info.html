@@ -1,0 +1,60 @@
+   {% extends "blank_admin.html" %}
+   {% load staticfiles %}
+{% block css%}
+  <style type="text/css">
+    .row p{
+      font-size: 16px;
+    }
+  </style>
+{% endblock%}
+   {% block main%}  
+<div class="app-title">
+      <div>
+          <h1><i class="fa fa-th-list"></i> 个人信息</h1>
+          <p>Personal info</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">个人信息</li>
+        </ul>
+      </div>
+      <div class="row">
+         <div class="col-md-8 mx-auto">
+          <div class="tile">
+            <h2>个人信息</h2>
+              <p>姓名:{{admin.uName}}</p>
+              <p>职位:管理员 </p>
+              <p>账号:{{admin.uid}}</p>
+              <p>年龄:{{admin.uage}}</p>
+              <p>性别:{{admin.gender}}</p>
+              <hr>
+              <h2>信息修改</h2>
+              <form action="/updateAdmin/" method="post">
+                <div class="form-group" >
+                  <label for="exampleInputEmail1">姓名</label>
+                  <input  class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{admin.uName}}">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">年龄</label>
+                  <input class="form-control" name="age" type="number" id="exampleInputPassword1"  value="{{admin.uage}}">
+                </div>
+                <div class="form-group">
+                  <div class="form-check form-check-inline">
+                  <input class="form-check-input" {% if admin.gender == '男' %}checked {% endif %} type="radio" name="gender" id="inlineRadio1" value="男">
+                  <label class="form-check-label" for="inlineRadio1">男</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" {% if admin.gender == '女' %}checked {% endif %}type="radio" name="gender" id="inlineRadio2" value="女">
+                  <label class="form-check-label" for="inlineRadio2">女</label>
+                </div>
+                </div>
+                <button type="submit" class="btn btn-primary">修改</button>
+              </form>
+          </div>
+        </div>
+      </div>
+</div>
+  {%endblock%}
+
+  {% block js%}
+{% endblock%}

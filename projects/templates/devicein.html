@@ -1,0 +1,127 @@
+   {% extends "blank_admin.html" %}
+   {% load staticfiles %}
+   {%block css%}
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css">
+   <style type="text/css" href="{%static 'css/editor.dataTables.min.css'%}"></style>
+   <link rel="stylesheet" href="{%static 'layui/css/layui.css'%}">
+   <style type="text/css">
+      div.layui-table-body.layui-table-main a{
+        color: white;
+      }
+   </style>
+   
+   {%endblock%}
+   {% block main%}  
+<div class="app-title">
+      <div>
+          <h1><i class="fa fa-th-list"></i> 引入设备</h1>
+          <p>import device</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">设备管理</li>
+          <li class="breadcrumb-item">引入设备</li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="tile">
+              <form id="tableform" lay-filter="tableform" class="layui-form" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">型号</label>
+            <div class="layui-input-block">
+                <input  name="modelid" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备名</label>
+            <div class="layui-input-block">
+                <input  name="name" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">制造商名</label>
+            <div class="layui-input-block">
+              <select name="manufactorName">
+               <option value="">选择制造商</option>
+                  {% for item in data%}
+              <option value="{{ item.name }}">{{ item.name }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型名</label>
+            <div class="layui-input-block">
+                <input  name="typeName" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-block">
+                <input  name="price" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">购买日期</label>
+            <div class="layui-input-block">
+                <input name="buyDate" type="text" class="layui-input" id="date1" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-block">
+                <input  name="num" type="number" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea  name="des"  required="required" class="layui-input" style="height:10rem"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" type="button" lay-submit lay-filter="tableform">提交</button>
+                <button  type="reset" class="layui-btn">重置</button>
+          </div>
+        </div>
+      </form>
+          </div>
+        </div>
+      </div>
+</div>
+  {%endblock%}
+
+    {%block js%}
+   <script src="{%static 'layui/layui.js'%}"></script>
+  <script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js'%}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="{%static 'js/dataTables.editor.min.js'%}"></script>
+    <script type="text/javascript">
+       layui.use(['layer', 'table', 'element', 'form','laydate'], function () {
+      var element=layui.element;
+      /*两个日期*/
+        var laydate = layui.laydate;
+        laydate.render({
+          elem: '#date1'
+        });
+        layui.form.on("submit(tableform)",function(data2){
+           for(var i=0;i<parseInt(data2.field.num);i++){
+           $.post("/addDevice/",data2.field,function(){
+              layer.msg("引入成功");
+            });
+         }
+         $.post("/addinrecord/",data2.field,function(){
+
+         });
+         return false;
+      })
+      });
+    </script>
+  {%block jss%} <!-- 补充其他人的js代码 -->
+  {%endblock%}
+  {%endblock%}

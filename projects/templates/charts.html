@@ -1,0 +1,142 @@
+   {% extends "blank_admin.html" %}
+   {% load staticfiles %}
+{% block css%}
+  <style type="text/css">
+
+    .desli li{
+      list-style: none;
+      
+      width: 3rem;
+      height:1.3rem;
+      margin-bottom: 0.3rem;
+      text-align: center;
+      color: white;
+    }
+   .desli  li:nth-child(1){
+    background-color: #F7464A;
+   }
+   .desli  li:nth-child(2){
+    background-color: rgb(5,155,255);
+   }
+   .desli  li:nth-child(3){
+    background-color: rgb(177,181,190)
+   }
+   .desli  li:nth-child(4){
+    background-color: #FDB45C;
+   }
+   .desli  li:nth-child(5){
+    background-color: #5AD3D1;
+   }
+  </style>
+{% endblock%}
+   {% block main%}  
+<div class="app-title">
+      <div>
+          <h1><i class="fa fa-th-list"></i> 数据统计</h1>
+          <p>Data statistics</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">数据统计</li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+              <h4>用户数</h4>
+              <p><b>{{usernum}}</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-laptop fa-3x"></i></i>
+            <div class="info">
+              <h4>设备数</h4>
+              <p><b>{{devicenum}}</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">饼状图(设备情况)</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
+            </div>
+            <ul class="desli">
+              <li >空闲</li>
+              <li>审核</li>
+              <li>借出</li>
+              <li>报修</li>
+              <li>报废</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">环线圈图表(设备情况)</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="doughnutChartDemo"></canvas>
+            </div>
+            <ul class="desli">
+              <li >空闲</li>
+              <li>审核</li>
+              <li>借出</li>
+              <li>报修</li>
+              <li>报废</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+  {%endblock%}
+
+  {% block js%}
+    <!-- Page specific javascripts-->
+    <script type="text/javascript" src="{% static 'js/plugins/chart.js'%}"></script>
+    <!-- <script type="text/javascript" src=></script> -->
+  <script type="text/javascript">
+    var pdata = [
+        {
+          value: {{freeDevicesnum}},
+          color:"#F7464A",
+          highlight: "#FF5A5E",
+          label: "空闲设备"
+        },
+        {
+          value: {{abDevicesnum}},
+          color: "#46BFBD",
+          highlight: "#5AD3D1",
+          label: "报废设备"
+        },
+        {
+          value: {{fixDevicesnum}},
+          color: "#FDB45C",
+          highlight: "#FFC870",
+          label: "维修设备"
+        },
+        {
+          value: {{checkDevicesnum}},
+
+          color: "rgb(5,155,255)",
+          highlight: "rgb(54,162,235)",
+          label: "审核设备"
+        },
+        {
+          value: {{loanDevicesnum}},
+          color: "rgb(177,181,190)",
+          highlight: "rgb(201,203,207)",
+          label: "借出设备"
+
+        }
+      ]  
+    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+    var pieChart = new Chart(ctxp).Pie(pdata);
+      
+    var ctxd = $("#doughnutChartDemo").get(0).getContext("2d");
+    var doughnutChart = new Chart(ctxd).Doughnut(pdata);
+  </script>
+{% endblock%}

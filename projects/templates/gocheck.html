@@ -1,0 +1,77 @@
+   {% extends "blank_admin.html" %}
+   {% load staticfiles %}
+{%block css%}
+<link rel="stylesheet" href="{%static 'layui/css/layui.css'%}">
+<style type="text/css">
+  .grid-item{
+    width: 300px;
+  }
+  .grid h3{
+    font-size: 20px;
+  }
+  .grid p{
+    margin:2px;
+    font-size: 15px;
+  }
+</style>
+{%endblock%}
+   {% block main%}  
+<div class="app-title">
+      <div>
+          <h1><i class="fa fa-th-list"></i> 处理审核</h1>
+          <p>Deal check</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i>申请审核</li>
+          <li class="breadcrumb-item">处理审核</li>
+        </ul>
+      </div>
+
+      <div class="tile"><h3>待审核的消息(如下)</h3></div>
+      <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 330 }'>
+
+        {% for item in data%}
+                  <div class="grid-item tile">
+
+                  <h3>from：{{item.studentRecord.student.uName}}:{{item.studentRecord.rtype}}请求</h3>
+                  <hr>
+                  <p> 申请时间:{{item.Datetime}}</p>
+                  <p> 申请者:{{item.studentRecord.student.uName}}</p>
+                  <p> 申请类型:{{item.studentRecord.rtype}}设备</p>
+                  <p> 设备id:{{item.studentRecord.device.id}}</p>
+                  <p> 设备名:{{item.studentRecord.device.name}}</p>
+                  <p> 设备型号:{{item.studentRecord.device.modelid}}</p>
+                  <hr>
+                  <label for="des">回复信息:</label>
+                  <textarea id="tx{{item.id}}" class="form-control" id="des" rows="3"></textarea>
+                  <button type="button" state="接受"  class="btn btn-success" cid={{item.id}}>接受</button>
+                  <button type="button" state="拒绝"  class="btn btn-danger" cid={{item.id}}>拒绝</button>
+                  </div>
+
+                 
+          {% endfor %}
+    </div>
+</div>
+  {%endblock%}
+{%block js%}
+    <script type="text/javascript" src="{%static 'js/masonry.pkgd.min.js'%}"></script>
+    <script src="{%static 'layui/layui.js'%}"></script>
+    <script type="text/javascript">
+      layui.use(['layer', 'table', 'element', 'form','laydate'], function () {
+      var element=layui.element;});
+
+      
+      $("button").click(function(event){
+        var cid=$(event.target).attr("cid");
+        var state=$(event.target).attr("state");
+        var msg=" ";
+        msg=$("#tx"+cid).val();
+        $.post("/responseCheck/",{"cid":cid,"state":state,"msg":msg},function(){
+            location.reload()
+        });            
+      });
+  
+    </script>
+     
+
+  {%endblock%}

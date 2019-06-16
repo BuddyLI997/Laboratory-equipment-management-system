@@ -1,0 +1,202 @@
+{% extends "table_stu.html" %}
+   {% load staticfiles %}
+   {% block bodytop%}
+   	<h1><i class="fa fa-th-list"></i> 设备借还</h1>
+          <p>Device info</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">设备借还</li>
+          <li class="breadcrumb-item active"><a href="#">设备借用</a></li>
+        </ul>
+   {% endblock%}
+
+   {% block table%}
+      <!--  搜索框  -->
+      <div class="demoTable">
+        搜索设备:
+        <div class="layui-inline">
+          <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+
+       <!-- 我们的表格 --> 
+      <table class="layui-hide layui-form" id="table" lay-filter="table"></table>
+       <!-- 弹出的表单 --> 
+      <form id="tableform" lay-filter="tableform" class="layui-form" style="display:none">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备名</label>
+            <div class="layui-input-block">
+                <input  name="name" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">制造商名</label>
+            <div class="layui-input-block">
+              <select name="manufactorName">
+               <option value="">选择制造商</option>
+                  {% for item in data%}
+              <option value="{{ item.name }}">{{ item.name }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型名</label>
+            <div class="layui-input-block">
+                <input  name="typeName" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-block">
+                <input  name="price" required="required" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">购买日期</label>
+            <div class="layui-input-block">
+                <input name="buyDate" type="text" class="layui-input" id="date1" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+        
+          
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="tableform">提交</button>
+                <button  type="reset" class="layui-btn">重置</button>
+          </div>
+        </div>
+      </form>
+   {%endblock%}
+
+
+  {%block jss%}
+
+<script type="text/html" id="toolbarDemo" lay-filter="table">
+    <div class="layui-btn-container">
+            <button class="layui-btn" lay-event="loan">借用</button>
+    </div> 
+  </script>
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="loan">借用</a>
+</script>
+  <script type="text/javascript">
+   layui.use(['layer', 'table', 'element', 'form','laydate'], function () {
+      var element=layui.element;
+      /*两个日期*/
+        var laydate = layui.laydate;
+        laydate.render({
+          elem: '#date1'
+        });
+        var layer = layui.layer //弹层
+            , table = layui.table //表格
+            , form = layui.form;
+        //执行一个 table 实例
+        table.render({
+            elem: '#table'
+            , width: 'auto'
+            ,toolbar:'#toolbarDemo' 
+            , page: true //开启分页
+            , cols: [[ //表头
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                // ,{field: 'id', title: 'ID', width: 70, sort: true,unresize: true}
+                // , {field: 'username', title: '用户名', width: 80}
+                , {field: 'modelid', title: '型号', width: 120,unresize: true}
+                , {field: 'name', title: '设备名', width: 120,unresize: true}
+                , {field: 'manufactorName', title: '制造商', width: 120,  unresize: true}
+                , {field: 'typeName', title: '类型', width: 120,unresize: true }
+                , {field: 'inDate', title: '入库日期', width: 120,unresize: true }
+                , {field: 'buyDate', title: '购买日期', width: 120,unresize: true }
+                , {field: 'price', title: '价格', width: 120,unresize: true }
+                , {field: 'use', title: '使用次数',width: 120,unresize: true }
+                , {field: 'state', title: '状态',width: 120,unresize: true }        
+                , {field: 'right', title: '操作', width: 120, align: 'center', toolbar: '#barDemo',unresize: true}
+            ]]
+            ,id:'tab'
+            ,method: 'post'
+            ,url:'/queryfreeDevice/' 
+            // ,url:'data2.json'
+        });
+        //监听工具条
+        table.on('tool(table)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'loan') {
+                var f=layer.confirm('借用选择的设备?', function (index) {  
+                    $.post("/loanDevice/",{id:data.id},function(){
+                      
+                      table.reload('tab',{
+                            where: { //设定异步数据接口的额外参数，任意设
+                             /*  aaaaaa: 'xxx'
+                              ,bbb: 'yyy' */
+                              //…
+                            }
+                            ,page: {
+                              curr: 1 //重新从第 1 页开始
+                            }
+                          });
+                      layer.close(f);
+                        layer.msg("借用请求发送成功");
+                  }   
+                    )
+                          return false;
+                });
+            }
+        });
+
+        //test
+        table.on('toolbar(table)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id)
+        ,data = checkStatus.data; //获取选中的数据
+        switch(obj.event){
+      case 'loan':
+        if(data.length === 0){
+          layer.msg('请选择一行');
+        } else {
+            //向服务端发送删除指令
+            var f=layer.confirm('借用选择的设备?', function (index) {
+            data.forEach(obj=>$.post("/loanDevice/",{id:obj.id},function(){
+              table.reload('tab',{
+                  where: { //设定异步数据接口的额外参数，任意设
+                  }
+                  ,page: {
+                    curr: 1 //重新从第 1 页开始
+                  }
+                });}));
+            layer.close(f);
+            layer.msg("借用请求发送成功成功");
+        })
+      }
+      break;
+    };
+  });
+    var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#demoReload');
+      
+      //执行重载
+      table.reload('tab', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+            name: demoReload.val()
+          }
+        }
+      });
+    }
+  };
+  
+  $('.demoTable .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+    });
+</script>
+ 
+{%endblock%}

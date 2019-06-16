@@ -1,0 +1,58 @@
+   {% extends "blank_stu.html" %}
+   {% load staticfiles %}
+   {% block main%}
+   <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i> 首页</h1>
+          <p>home</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">首页</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+              <h4>用户数</h4>
+              <p><b>{{usernum}}</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-laptop fa-3x"></i></i>
+            <div class="info">
+              <h4>设备数</h4>
+              <p><b>{{devicenum}}</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+          <div class="row">
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">实验室规章</h3>
+
+            <ul>
+              <li>学生必须按照任课教师与管理人员指定的序号就座，不得擅自更换座位，任课教师有义务与责任负责实验室纪律，并按照相关规定使用计算机实验室。</li>
+              <li>机器出现问题应立即向指导教师或管理人员报告。严禁私自打开主机箱，严禁私自更换鼠标、键盘、显示器等设备。因不听指挥，非法操作造成的设备损坏，责任人应负责赔偿，并按有关规定严肃处理。</li>
+              <li>禁止设置开机密码、登陆密码、屏幕保护密码等，不得破坏计算机操作系统及相关教学资料，禁止挪动计算机位置（包括显示器和外设），如有发现,任课教师以及实验室管理员有权取消上机资格。</li>
+            </ul>
+            <p>希望大家遵守规定</p>
+            <p>欢迎大家使用本系统</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tile">
+            <h3 class="tile-title">实验室设备管理系统</h3>
+            <h4 class="tile-title">这是一个系统的简单介绍</h4>
+            <p>这个系统涵盖了人员管理，设备管理，数据统计，操作信息记录等功能</p>
+            <p> 使用python写成，运用了Django后端框架</p>
+            <p> 前端使用了Bootstrap框架，和一系列的插件库</p>
+            <p> font-awesome强大的ui库</p>
+            <p>总而言之，这是一个很强大的系统</p>
+          </div>
+        </div>
+      </div>
+       {% endblock%}
